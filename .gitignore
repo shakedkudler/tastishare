@@ -1,0 +1,59 @@
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+jspm_packages/
+
+# dotenv environment variables
+.env
+.env.*.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# React specific
+*.local
+*.cache/
+.cache/
+public/static/
+
+# Testing
+coverage/
+*.lcov
+
+# Misc
+*.tgz
+*.log
+
+# Optional npm cache directory
+.npm
+
+# Parcel-bundler cache (if used)
+.cache/
+
+# Next.js build output (if used)
+.next/
+
+# Storybook build outputs (if used)
+.out/
+storybook-static/
+
+# Mac system files
+Icon?
