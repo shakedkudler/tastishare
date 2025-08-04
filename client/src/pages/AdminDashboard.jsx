@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab, Typography, Container, Paper } from "@mui/material";
 import UsersAdminTable from "../components/UsersAdminTable";
 import RecipesAdminTable from "../components/RecipesAdminTable";
+import ReviewsAdminTable from "../components/ReviewsAdminTable";
+
 
 const AdminDashboard = () => {
     const [tab, setTab] = useState(0);
@@ -19,11 +21,14 @@ const AdminDashboard = () => {
                 >
                     <Tab label="Users" />
                     <Tab label="Recipes" />
+                    <Tab label="Reviews" />
+
 
                 </Tabs>
                 <Box>
                     {tab === 0 && <UsersAdminTable />}
                     {tab === 1 && <RecipesAdminTable />}
+                    {tab === 2 && <ReviewsAdminTable />}
                 </Box>
             </Paper>
         </Container>

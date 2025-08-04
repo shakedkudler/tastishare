@@ -181,10 +181,10 @@ const RecipePage = () => {
             {/* Back button */}
             <Button
                 startIcon={<ArrowBackIcon />}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/recipes")}
                 sx={{ mb: 2 }}
             >
-                Back to home page
+                Back to Recipes
             </Button>
 
             {/* Title + image + categories */}

@@ -136,7 +136,6 @@ export const getAllRecipes = async (req, res) => {
   }
 };
 
-
 // ✅ מתכונים פופולריים (ממוצע דירוג מעל 4, מוגבל ל-6 מתכונים)
 export const getPopularRecipes = async (req, res) => {
   try {
@@ -150,15 +149,36 @@ export const getPopularRecipes = async (req, res) => {
       ORDER BY averageRating DESC
       LIMIT 6
     `);
-    res.json(recipes);
+
+    if (!recipes.length) return res.json([]);
+
+    const recipeIds = recipes.map(r => r.id);
+    const [cats] = await db.query(
+      `SELECT rc.recipe_id, c.id, c.name
+       FROM recipe_categories rc
+       JOIN categories c ON rc.category_id = c.id
+       WHERE rc.recipe_id IN (${recipeIds.map(() => '?').join(',')})`,
+      recipeIds
+    );
+
+    const categoriesMap = {};
+    cats.forEach(cat => {
+      if (!categoriesMap[cat.recipe_id]) categoriesMap[cat.recipe_id] = [];
+      categoriesMap[cat.recipe_id].push({ id: cat.id, name: cat.name });
+    });
+
+    const recipesWithCategories = recipes.map(recipe => ({
+      ...recipe,
+      categories: categoriesMap[recipe.id] || []
+    }));
+
+    res.json(recipesWithCategories);
   } catch (err) {
     console.error("❌ Error fetching popular recipes:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
-// ✅ מתכונים חדשים (6 מתכונים אחרונים עם תמונה)
 export const getNewRecipes = async (req, res) => {
   try {
     const [recipes] = await db.query(`
@@ -167,15 +187,35 @@ export const getNewRecipes = async (req, res) => {
       ORDER BY created_at DESC
       LIMIT 6
     `);
-    res.json(recipes);
+
+    if (!recipes.length) return res.json([]);
+
+    const recipeIds = recipes.map(r => r.id);
+    const [cats] = await db.query(
+      `SELECT rc.recipe_id, c.id, c.name
+       FROM recipe_categories rc
+       JOIN categories c ON rc.category_id = c.id
+       WHERE rc.recipe_id IN (${recipeIds.map(() => '?').join(',')})`,
+      recipeIds
+    );
+
+    const categoriesMap = {};
+    cats.forEach(cat => {
+      if (!categoriesMap[cat.recipe_id]) categoriesMap[cat.recipe_id] = [];
+      categoriesMap[cat.recipe_id].push({ id: cat.id, name: cat.name });
+    });
+
+    const recipesWithCategories = recipes.map(recipe => ({
+      ...recipe,
+      categories: categoriesMap[recipe.id] || []
+    }));
+
+    res.json(recipesWithCategories);
   } catch (err) {
     console.error("❌ Error fetching new recipes:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
 
 // ✅ שליפת מתכון לפי מזהה
 export const getRecipeById = async (req, res) => {

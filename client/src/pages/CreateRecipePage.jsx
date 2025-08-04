@@ -85,6 +85,10 @@ const CreateRecipePage = () => {
             return setError("Please select at least one category.");
         }
 
+        if (!prepTime || !cookTime) {
+            return setError("Please enter both preparation and cooking times.");
+        }
+
         try {
             const token = localStorage.getItem("token");
 
@@ -190,6 +194,7 @@ const CreateRecipePage = () => {
                         onChange={e => setPrepTime(e.target.value)}
                         sx={{ flex: 1 }}
                         inputProps={{ min: 0 }}
+                        required
                     />
                     <LocalDiningIcon fontSize="small" color="action" sx={{ ml: 3 }} />
                     <TextField
@@ -199,6 +204,7 @@ const CreateRecipePage = () => {
                         onChange={e => setCookTime(e.target.value)}
                         sx={{ flex: 1 }}
                         inputProps={{ min: 0 }}
+                        required
                     />
                 </Stack>
 

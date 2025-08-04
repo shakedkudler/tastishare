@@ -32,7 +32,7 @@ const Footer = () => {
                     </Typography>
 
                     <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                        <Link
+                        {/* <Link
                             component={RouterLink}
                             to="/"
                             color="primary"
@@ -67,7 +67,7 @@ const Footer = () => {
                             sx={{ cursor: 'pointer', fontWeight: 600 }}
                         >
                             All Recipes
-                        </Link>
+                        </Link> */}
                     </Box>
                 </Toolbar>
             </Container>

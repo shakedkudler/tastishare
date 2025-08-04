@@ -92,7 +92,12 @@ app.get("/api/admin/recipes", verifyToken, async (req, res) => {
 
   try {
     // שליפת כל המתכונים, בלי סינון
-    const [recipes] = await db.query("SELECT * FROM recipes");
+    // const [recipes] = await db.query("SELECT * FROM recipes");
+    const [recipes] = await db.query(`
+  SELECT r.*, u.username, u.active AS userActive
+  FROM recipes r
+  JOIN users u ON r.userId = u.id
+`);
 
     if (!recipes.length) return res.json([]);
 
@@ -145,25 +150,401 @@ app.put("/api/admin/users/:id/deactivate", verifyToken, async (req, res) => {
   }
 });
 
+
+
+
+// app.patch("/api/users/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+//   const userRole = req.user.role;
+
+//   // רק אדמין יכול לשנות סטטוס של משתמשים אחרים
+//   if (userRole !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // עדכון סטטוס המשתמש
+//     await db.query("UPDATE users SET active = ? WHERE id = ?", [active, id]);
+//     res.json({ message: "User status updated" });
+//   } catch (err) {
+//     console.error("Error updating user active status:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+
+
+// // SELECT 
+//         r.id, 
+//         r.recipe_id, 
+//         r.user_id, 
+//         r.rating, 
+//         r.comment, 
+//         r.created_at, 
+//         r.active,
+//         u.username AS reviewer_name,
+//         u.active AS user_active,
+//         rec.title AS recipe_title
+//       FROM reviews r
+//       JOIN users u ON r.user_id = u.id
+//       JOIN recipes rec ON r.recipe_id = rec.id
+//     `);
+
+
+
+// SELECT 
+//         r.id, 
+//         r.recipe_id, 
+//         r.user_id, 
+//         r.rating, 
+//         r.comment, 
+//         r.created_at, 
+//         r.active,
+//         u.username AS username,
+//         u.active AS user_active,
+//         rec.title AS recipe_title,
+//         rec.active AS recipe_active
+//       FROM reviews r
+//       JOIN users u ON r.user_id = u.id
+//       JOIN recipes rec ON r.recipe_id = rec.id
+//     `);
+
+
+
+
+
+app.get("/api/admin/reviews", verifyToken, async (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  try {
+    const [reviews] = await db.query(`
+      
+
+
+SELECT 
+  r.id, 
+  r.recipe_id, 
+  r.user_id, 
+  r.rating, 
+  r.comment, 
+  r.created_at, 
+  r.active,
+  u.username AS username,
+  u.active AS user_active,
+  rec.title AS recipe_title,
+  rec.active AS recipe_active,
+  ru.active AS recipe_owner_active
+FROM reviews r
+JOIN users u ON r.user_id = u.id
+JOIN recipes rec ON r.recipe_id = rec.id
+JOIN users ru ON rec.userId = ru.id
+
+
+
+    `);
+
+    res.json(reviews);
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// app.patch("/api/reviews/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+
+//   if (req.user.role !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // נוודא מי כתב את הביקורת ומה הסטטוס של המשתמש
+//     const [[review]] = await db.query(
+//       `SELECT r.*, u.active AS user_active
+//        FROM reviews r
+//        JOIN users u ON r.user_id = u.id
+//        WHERE r.id = ?`,
+//       [id]
+//     );
+
+//     if (!review) {
+//       return res.status(404).json({ message: "Review not found" });
+//     }
+
+//     // מניעת שחזור אם המשתמש חסום
+//     if (active === 1 && review.user_active === 0) {
+//       return res.status(403).json({ message: "Cannot restore review: user is blocked" });
+//     }
+
+//     await db.query("UPDATE reviews SET active = ? WHERE id = ?", [active, id]);
+//     res.json({ message: "Review status updated" });
+//   } catch (err) {
+//     console.error("Error updating review:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+// app.patch("/api/reviews/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+
+//   if (req.user.role !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // נוודא מי כתב את הביקורת ומה הסטטוס של המשתמש ושל המתכון
+//     const [[review]] = await db.query(
+//       `SELECT r.*, u.active AS user_active, rec.active AS recipe_active
+//        FROM reviews r
+//        JOIN users u ON r.user_id = u.id
+//        JOIN recipes rec ON r.recipe_id = rec.id
+//        WHERE r.id = ?`,
+//       [id]
+//     );
+
+//     if (!review) {
+//       return res.status(404).json({ message: "Review not found" });
+//     }
+
+//     // מניעת שחזור אם המשתמש או המתכון חסומים
+//     if (active === 1 && (review.user_active === 0 || review.recipe_active === 0)) {
+//       return res.status(403).json({ message: "Cannot restore review: user or recipe is blocked" });
+//     }
+
+//     await db.query("UPDATE reviews SET active = ? WHERE id = ?", [active, id]);
+//     res.json({ message: "Review status updated" });
+//   } catch (err) {
+//     console.error("Error updating review:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+////לא ברור אם הייתה כפילות
+
+
+
+// app.patch("/api/users/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+//   const userRole = req.user.role;
+
+//   // רק אדמין יכול לשנות סטטוס של משתמשים אחרים
+//   if (userRole !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // עדכון סטטוס המשתמש
+//     await db.query("UPDATE users SET active = ? WHERE id = ?", [active, id]);
+
+//     // אם המשתמש שוחרר, נשחרר גם את כל המתכונים שלו
+//     if (active === 1) {
+//       await db.query("UPDATE recipes SET active = 1 WHERE userId = ?", [id]);
+//     }
+
+//     res.json({ message: "User status updated" });
+//   } catch (err) {
+//     console.error("Error updating user active status:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+// app.patch("/api/users/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+//   const userRole = req.user.role;
+
+//   if (userRole !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     await db.query("UPDATE users SET active = ? WHERE id = ?", [active, id]);
+
+//     if (active === 0) {
+//       // 🔒 אם חוסמים משתמש – נסתיר גם את המתכונים והביקורות שלו
+//       await db.query("UPDATE recipes SET active = 0 WHERE userId = ?", [id]);
+//       await db.query("UPDATE reviews SET active = 0 WHERE user_id = ?", [id]);
+//     } else if (active === 1) {
+//       // ✅ אם מחזירים משתמש – נפעיל מתכונים וביקורות תקפות בלבד
+//       await db.query("UPDATE recipes SET active = 1 WHERE userId = ?", [id]);
+//       await db.query(`
+//         UPDATE reviews r
+//         JOIN users u ON r.user_id = u.id
+//         JOIN recipes rec ON r.recipe_id = rec.id
+//         SET r.active = 1
+//         WHERE r.user_id = ? AND u.active = 1 AND rec.active = 1
+//       `, [id]);
+//     }
+
+//     res.json({ message: "User status updated" });
+//   } catch (err) {
+//     console.error("Error updating user active status:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+// app.patch("/api/reviews/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+
+//   if (req.user.role !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // נוודא מי כתב את הביקורת ומה הסטטוס של המשתמש והמתכון
+//     const [[review]] = await db.query(
+//       `SELECT r.*, u.active AS user_active, rec.active AS recipe_active
+//        FROM reviews r
+//        JOIN users u ON r.user_id = u.id
+//        JOIN recipes rec ON r.recipe_id = rec.id
+//        WHERE r.id = ?`,
+//       [id]
+//     );
+
+//     if (!review) {
+//       return res.status(404).json({ message: "Review not found" });
+//     }
+
+//     // מניעת שחזור אם המשתמש או המתכון חסומים
+//     if (active === 1 && (review.user_active === 0 || review.recipe_active === 0)) {
+//       return res.status(403).json({ message: "Cannot restore review: user or recipe is blocked" });
+//     }
+
+//     // await db.query("UPDATE reviews SET active = ? WHERE id = ?", [active, id]);
+//     await db.query(
+//   `UPDATE reviews r
+//    JOIN recipes rec ON r.recipe_id = rec.id
+//    SET r.active = 1
+//    WHERE r.user_id = ? AND rec.active = 1`,
+//   [id]
+// );
+
+//     res.json({ message: "Review status updated" });
+//   } catch (err) {
+//     console.error("Error updating review:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+
+// app.patch("/api/users/:id/active", verifyToken, async (req, res) => {
+//   const { id } = req.params;
+//   const { active } = req.body;
+//   const userRole = req.user.role;
+
+//   if (userRole !== "admin") {
+//     return res.status(403).json({ message: "Access denied" });
+//   }
+
+//   try {
+//     // עדכון סטטוס המשתמש
+//     await db.query("UPDATE users SET active = ? WHERE id = ?", [active, id]);
+
+//     // אם משחררים – נשחרר גם את המתכונים והביקורות שלו, בתנאי שהמתכון לא חסום
+//     if (active === 1) {
+//       // משחרר את המתכונים
+//       await db.query("UPDATE recipes SET active = 1 WHERE userId = ?", [id]);
+
+//       // משחרר את הביקורות רק אם המתכון שלהן גם פעיל
+//       await db.query(`
+//         UPDATE reviews r
+//         JOIN recipes rec ON r.recipe_id = rec.id
+//         SET r.active = 1
+//         WHERE r.user_id = ? AND rec.active = 1
+//       `, [id]);
+//     }
+
+//     res.json({ message: "User status updated" });
+//   } catch (err) {
+//     console.error("Error updating user active status:", err);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+// הנכון
+
 app.patch("/api/users/:id/active", verifyToken, async (req, res) => {
   const { id } = req.params;
   const { active } = req.body;
-  const userRole = req.user.role;
 
-  // רק אדמין יכול לשנות סטטוס של משתמשים אחרים
-  if (userRole !== "admin") {
+  if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Access denied" });
   }
 
   try {
     // עדכון סטטוס המשתמש
     await db.query("UPDATE users SET active = ? WHERE id = ?", [active, id]);
+
+    if (active === 0) {
+      // 🔴 חסימת מתכונים של המשתמש
+      await db.query("UPDATE recipes SET active = 0 WHERE userId = ?", [id]);
+
+      // 🔴 חסימת ביקורות שהוא כתב
+      await db.query("UPDATE reviews SET active = 0 WHERE user_id = ?", [id]);
+
+      // 🔴 חסימת ביקורות של אחרים למתכונים שלו
+      await db.query(`
+        UPDATE reviews r
+        JOIN recipes rec ON r.recipe_id = rec.id
+        SET r.active = 0
+        WHERE rec.userId = ?`, [id]);
+    } else if (active === 1) {
+      // 🟢 שחרור מתכונים
+      await db.query("UPDATE recipes SET active = 1 WHERE userId = ?", [id]);
+
+      // 🟢 שחרור ביקורות שהוא כתב
+      await db.query("UPDATE reviews SET active = 1 WHERE user_id = ?", [id]);
+
+      // 🟢 שחרור ביקורות של אחרים למתכונים שלו *רק אם הם פעילים*
+      await db.query(`
+        UPDATE reviews r
+        JOIN recipes rec ON r.recipe_id = rec.id
+        SET r.active = 1
+        WHERE rec.userId = ? AND rec.active = 1`, [id]);
+    }
+
     res.json({ message: "User status updated" });
   } catch (err) {
     console.error("Error updating user active status:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
+app.patch("/api/recipes/:id/active", verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { active } = req.body;
+
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  try {
+    // עדכון סטטוס המתכון
+    await db.query("UPDATE recipes SET active = ? WHERE id = ?", [active, id]);
+
+    if (active === 0) {
+      // חסימת כל הביקורות על המתכון
+      await db.query("UPDATE reviews SET active = 0 WHERE recipe_id = ?", [id]);
+    } else if (active === 1) {
+      // שחזור ביקורות רק אם כותב הביקורת פעיל
+      await db.query(`
+        UPDATE reviews r
+        JOIN users u ON r.user_id = u.id
+        SET r.active = 1
+        WHERE r.recipe_id = ? AND u.active = 1
+      `, [id]);
+    }
+
+    res.json({ message: "Recipe status updated" });
+  } catch (err) {
+    console.error("Error updating recipe status:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 
 
@@ -183,7 +564,18 @@ app.get("/api/my-recipes", verifyToken, async (req, res) => {
 
 app.get("/api/recipes/random/6", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM recipes WHERE active = 1 ORDER BY RAND() LIMIT 6");
+
+    
+
+ const [rows] = await db.query(`
+      SELECT * 
+      FROM recipes 
+      WHERE active = 1 AND image IS NOT NULL 
+      ORDER BY RAND() 
+      LIMIT 6
+    `);
+
+
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -219,6 +611,7 @@ app.get('/api/recipes/new', async (req, res) => {
     const [newRecipes] = await db.query(
       `SELECT * FROM recipes WHERE image IS NOT NULL AND image != '' AND active = 1 ORDER BY created_at DESC LIMIT 6`
     );
+
     res.json(newRecipes);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch new recipes' });
@@ -493,6 +886,35 @@ app.post("/api/recipes/:id/upload-image", verifyToken, upload.single("image"), a
   }
 });
 
+
+app.patch("/api/reviews/:id/active", verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { active } = req.body;
+
+  try {
+    const [result] = await db.query(
+      "UPDATE reviews SET active = ? WHERE id = ?",
+      [active, id]
+    );
+
+
+
+//     await db.query("UPDATE recipes SET active = ? WHERE id = ?", [active, id]);
+
+// // וגם:
+// await db.query("UPDATE reviews SET active = 0 WHERE recipe_id = ?", [id]);
+
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    res.json({ message: "Review updated" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/api/reviews/:id", verifyToken, async (req, res) => {
   const { id } = req.params; // ID של המתכון
   const { comment, rating } = req.body;
@@ -653,14 +1075,35 @@ app.get("/api/recipes/:id/full", async (req, res) => {
     );
 
     // ביקורות - עם שם משתמש ואווטאר
+    // const [reviews] = await db.query(
+    //   `SELECT r.comment, r.rating, r.created_at, u.username, u.avatar
+    //    FROM reviews r
+    //    JOIN users u ON r.user_id = u.id
+    //    WHERE r.recipe_id = ?
+    //    ORDER BY r.created_at DESC`,
+    //   [id]
+    // );
+
+//     const [reviews] = await db.query(
+//   `SELECT r.id, r.comment, r.rating, r.created_at, u.username, u.avatar
+//    FROM reviews r
+//    JOIN users u ON r.user_id = u.id
+//    WHERE r.recipe_id = ? AND r.active = 1
+//    ORDER BY r.created_at DESC`,
+//   [id]
+// );
+
+    // ביקורות - רק פעילות + משתמשים פעילים + מתכון פעיל
     const [reviews] = await db.query(
-      `SELECT r.comment, r.rating, r.created_at, u.username, u.avatar
+      `SELECT r.id, r.comment, r.rating, r.created_at, u.username, u.avatar
        FROM reviews r
        JOIN users u ON r.user_id = u.id
-       WHERE r.recipe_id = ?
+       JOIN recipes re ON r.recipe_id = re.id
+       WHERE r.recipe_id = ? AND r.active = 1 AND u.active = 1 AND re.active = 1
        ORDER BY r.created_at DESC`,
       [id]
     );
+
 
     let isFavorite = false;
     const [favRows] = await db.query(

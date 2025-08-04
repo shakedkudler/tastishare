@@ -4,6 +4,8 @@ import {
     Paper, Button, Typography, Chip, Stack
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";  // <-- הוספה
+import { Tooltip } from "@mui/material";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,20 +34,45 @@ const RecipesAdminTable = () => {
     }, []);
 
     // Block/unblock handler
+    // const toggleActive = async (id, currentActive) => {
+    //     try {
+    //         let url, method = "PUT";
+    //         if (currentActive) {
+    //             url = `${API_URL}/api/recipes/${id}/deactivate`;
+    //         } else {
+    //             url = `${API_URL}/api/recipes/${id}/reactivate`;
+    //         }
+    //         const res = await fetch(url, {
+    //             method,
+    //             headers: {
+    //                 Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //             },
+    //         });
+    //         if (res.ok) {
+    //             setRecipes((prev) =>
+    //                 prev.map((r) =>
+    //                     r.id === id ? { ...r, active: currentActive ? 0 : 1 } : r
+    //                 )
+    //             );
+    //         }
+    //     } catch (error) {
+    //         console.error("Error updating recipe active status:", error);
+    //     }
+    // };
+
+
+
     const toggleActive = async (id, currentActive) => {
         try {
-            let url, method = "PUT";
-            if (currentActive) {
-                url = `${API_URL}/api/recipes/${id}/deactivate`;
-            } else {
-                url = `${API_URL}/api/recipes/${id}/reactivate`;
-            }
-            const res = await fetch(url, {
-                method,
+            const res = await fetch(`${API_URL}/api/recipes/${id}/active`, {
+                method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ active: currentActive ? 0 : 1 }),
             });
+
             if (res.ok) {
                 setRecipes((prev) =>
                     prev.map((r) =>
@@ -68,6 +95,7 @@ const RecipesAdminTable = () => {
                     <TableRow>
                         <TableCell>Image</TableCell>
                         <TableCell>Title</TableCell>
+                        <TableCell>Author</TableCell>
                         <TableCell>Description</TableCell>
                         <TableCell>Created At</TableCell>
                         <TableCell>Categories</TableCell>
@@ -120,6 +148,7 @@ const RecipesAdminTable = () => {
                                     )}
                                 </TableCell>
                                 <TableCell>{recipe.title}</TableCell>
+                                <TableCell>{recipe.user?.username || recipe.username || "-"}</TableCell>
                                 <TableCell>
                                     <Typography
                                         variant="body2"
@@ -153,16 +182,31 @@ const RecipesAdminTable = () => {
                                         ? <Chip label="Active" color="success" />
                                         : <Chip label="Blocked" color="error" />}
                                 </TableCell>
+
+
+
                                 <TableCell>
-                                    <Button
-                                        variant="outlined"
-                                        color={recipe.active ? "error" : "success"}
-                                        size="small"
-                                        sx={{ ml: 1 }}
-                                        onClick={() => toggleActive(recipe.id, recipe.active)}
+                                    <Tooltip
+                                        title={
+                                            recipe.userActive === 0 && recipe.active === 0
+                                                ? "Cannot unblock this recipe while its creator is blocked"
+                                                : ""
+                                        }
                                     >
-                                        {recipe.active ? "Block" : "Unblock"}
-                                    </Button>
+                                        <span>
+                                            <Button
+                                                variant="outlined"
+                                                color={recipe.active ? "error" : "success"}
+                                                size="small"
+                                                sx={{ ml: 1 }}
+                                                onClick={() => toggleActive(recipe.id, recipe.active)}
+                                                disabled={recipe.userActive === 0 && recipe.active === 0}
+                                            >
+                                                {recipe.active ? "Block" : "Unblock"}
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+
                                     <Button
                                         variant="contained"
                                         color="primary"
@@ -173,6 +217,10 @@ const RecipesAdminTable = () => {
                                         Edit
                                     </Button>
                                 </TableCell>
+
+
+
+
                             </TableRow>
                         ))
                     )}

@@ -246,9 +246,6 @@ const UsersAdminTable = () => {
                                     >
                                         {user.active ? "Block" : "Unblock"}
                                     </Button>
-                                    <Button variant="contained" color="primary" size="small" disabled>
-                                        Edit
-                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))
