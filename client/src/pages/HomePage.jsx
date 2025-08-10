@@ -71,7 +71,7 @@ const HomePage = () => {
             elevation={3}
             sx={{
                 width: 1440,
-                maxWidth: "98vw",
+                maxWidth: "100%",
                 m: "0 auto",
                 p: { xs: 2, md: 4 },
                 borderRadius: 4,
@@ -82,7 +82,8 @@ const HomePage = () => {
                 variant="h3"
                 fontWeight="bold"
                 align="center"
-                sx={{ mb: 3, mt: 2, color: "primary.main" }}
+                color="primary.main"
+                sx={{ mb: 3, mt: 2 }}
             >
                 Welcome to TastiShare!
             </Typography>
@@ -124,8 +125,8 @@ const HomePage = () => {
             <Divider sx={{ my: 3 }} />
 
             {/* קרוסלה פופולרית */}
-            <Box sx={{ mb: 1 }}>
-                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            <Box sx={{ mb: 1, textAlign: "center" }}>
+                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
                     Popular Recipes
                 </Typography>
                 <EmblaCarousel
@@ -154,8 +155,8 @@ const HomePage = () => {
             <Divider sx={{ my: 3 }} />
 
             {/* קרוסלה של מתכונים חדשים */}
-            <Box sx={{ mb: 1 }}>
-                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            <Box sx={{ mb: 1, textAlign: "center" }}>
+                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
                     New Recipes
                 </Typography>
                 <EmblaCarousel

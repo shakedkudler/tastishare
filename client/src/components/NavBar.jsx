@@ -112,7 +112,6 @@ const NavBar = () => {
                             >
                                 TastiShare
                             </Typography>
-
                             {/* כפתורי ניווט בדסקטופ */}
                             {isLoggedIn && (
                                 <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, ml: 2 }}>
@@ -129,7 +128,6 @@ const NavBar = () => {
                                                 {link.label}
                                             </Button>
                                         ))}
-
                                     {user?.role === "admin" && (
                                         <Button
                                             onClick={() => navigate('/admin-dashboard')}
@@ -141,7 +139,6 @@ const NavBar = () => {
                                 </Box>
                             )}
                         </Box>
-
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             {/* כפתור יצירה בדסקטופ */}
                             {isLoggedIn && (
@@ -154,7 +151,6 @@ const NavBar = () => {
                                     >
                                         + CREATE
                                     </Button>
-
                                     <Tooltip title="Open user menu">
                                         {user?.avatar ? (
                                             <Avatar
@@ -179,16 +175,13 @@ const NavBar = () => {
                                     </Tooltip>
                                 </Box>
                             )}
-
                             {/* כפתורי התחברות והרשמה בדסקטופ וטלפון */}
                             {!isLoggedIn && (
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     {loggedOutButtons}
                                 </Box>
                             )}
-
                             {/* שם + אווטאר לא בנייד (הסרתי אותם משורת ה-NAVBAR) */}
-
                             {/* המבורגר לנייד (הופיע רק כשמשתמש מחובר) */}
                             {isLoggedIn && (
                                 <IconButton
@@ -204,7 +197,6 @@ const NavBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-
             {/* תפריט המשתמש בדסקטופ */}
             <Menu
                 anchorEl={anchorElUser}
@@ -247,7 +239,6 @@ const NavBar = () => {
                     Log out
                 </MenuItem>
             </Menu>
-
             {/* תפריט המבורגר לנייד */}
             <Drawer
                 anchor="right"
@@ -257,6 +248,17 @@ const NavBar = () => {
                     sx: { width: 250, borderRadius: '10px 0 0 10px', p: 2 }
                 }}
             >
+                {/* כפתור סגירה בתחתית */}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <IconButton onClick={handleMobileMenuClose} aria-label="Close menu">
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
                 {/* בלוק עם שם ואווטאר למעלה */}
                 {isLoggedIn && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, px: 1 }}>
@@ -276,11 +278,9 @@ const NavBar = () => {
                         </Typography>
                     </Box>
                 )}
-
                 <List>
                     {isLoggedIn && (
                         <>
-                            {/* כפתור Home קודם */}
                             <ListItem
                                 button
                                 onClick={() => {
@@ -289,25 +289,24 @@ const NavBar = () => {
                                 }}
                                 selected={isActive('/')}
                             >
-                                <ListItemText primary="Home" />
+                                <ListItemText
+                                    primary="Home"
+                                    sx={isActive('/') ? { color: 'primary.main' } : {}}
+                                />
                             </ListItem>
-
-                            {/* כפתור Create מתחת ל-Home, עם עיצוב רגיל (לא בולט) */}
                             <ListItem
                                 button
                                 onClick={() => {
                                     navigate('/create');
                                     handleMobileMenuClose();
                                 }}
-                                sx={{ mb: 1 }}
+                                selected={isActive('/create')}
                             >
                                 <ListItemText
                                     primary="Create"
-                                    primaryTypographyProps={{ fontSize: 14, color: 'inherit' }}
+                                    sx={isActive('/create') ? { color: 'primary.main' } : {}}
                                 />
                             </ListItem>
-
-                            {/* --- הוספה: כפתור אדמין במובייל, לפני Log out --- */}
                             {user?.role === "admin" && (
                                 <ListItem
                                     button
@@ -315,19 +314,20 @@ const NavBar = () => {
                                         navigate('/admin-dashboard');
                                         handleMobileMenuClose();
                                     }}
-                                    sx={{}}
+                                    selected={isActive('/admin-dashboard')}
                                 >
-                                    <ListItemText primary="Admin Dashboard" />
+                                    <ListItemText
+                                        primary="Admin Dashboard"
+                                        sx={isActive('/admin-dashboard') ? { color: 'primary.main' } : {}}
+                                    />
                                 </ListItem> /// שינוי אדמין לבדיקה
                             )}
-
                             {/* שאר הקישורים פרט ל-Log out */}
                             {loggedInLinks
                                 .filter(link => !['Home', 'Log out'].includes(link.label))
                                 .map((link) => {
-                                    if (link.action) {
-                                        return null; // נשאיר את Log out נפרד מטיפול ספציפי
-                                    }
+                                    if (link.action) return null;
+                                    const selected = isActive(link.path);
                                     return (
                                         <ListItem
                                             button
@@ -336,24 +336,24 @@ const NavBar = () => {
                                                 navigate(link.path);
                                                 handleMobileMenuClose();
                                             }}
-                                            selected={isActive(link.path)}
+                                            selected={selected}
                                         >
-                                            <ListItemText primary={link.label} />
+                                            <ListItemText
+                                                primary={link.label}
+                                                sx={selected ? { color: 'primary.main' } : {}}
+                                            />
                                         </ListItem>
                                     );
                                 })}
-
                             {/* כפתור Log out אדום */}
                             <ListItem
                                 button
                                 onClick={handleLogout}
-                                sx={{ color: 'error.main', fontWeight: 'normal' }}
                             >
                                 <ListItemText primary="Log out" />
                             </ListItem>
                         </>
                     )}
-
                     {/* אם לא מחוברים - הכפתורים רגילים */}
                     {!isLoggedIn && (
                         <>
@@ -366,20 +366,6 @@ const NavBar = () => {
                         </>
                     )}
                 </List>
-
-                {/* כפתור סגירה בתחתית */}
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        borderTop: '1px solid #ccc',
-                        p: 1,
-                    }}
-                >
-                    <IconButton onClick={handleMobileMenuClose} aria-label="Close menu">
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
             </Drawer>
         </>
     );

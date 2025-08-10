@@ -1,11 +1,8 @@
-import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@mui/material/Link';
 
 const Footer = () => {
     return (
@@ -13,7 +10,7 @@ const Footer = () => {
             position="static"
             color="default"
             elevation={1}
-            sx={{ top: 'auto', bottom: 0, mt: 4, bgcolor: '#f5f5f5' }}
+            sx={{ top: 'auto', bottom: 0, bgcolor: '#f5f5f5' }}
         >
             <Container maxWidth="xl">
                 <Toolbar

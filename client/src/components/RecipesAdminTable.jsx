@@ -169,22 +169,19 @@ const RecipesAdminTable = () => {
                                         : "-"}
                                 </TableCell>
                                 <TableCell>
-                                    <Stack direction="row" spacing={1} flexWrap="wrap">
+                                    <Stack direction="row" gap={1} flexWrap="wrap">
                                         {Array.isArray(recipe.categories) && recipe.categories.length > 0
                                             ? recipe.categories.map((cat) =>
-                                                <Chip key={cat.id} label={cat.name} size="small" />
+                                                <Chip key={cat.id} label={cat.name} size="small" color="primary" />
                                             )
                                             : <Chip label="None" size="small" />}
                                     </Stack>
                                 </TableCell>
                                 <TableCell>
                                     {recipe.active
-                                        ? <Chip label="Active" color="success" />
-                                        : <Chip label="Blocked" color="error" />}
+                                        ? <Chip label="Active" color="info" />
+                                        : <Chip label="Blocked" color="primary" />}
                                 </TableCell>
-
-
-
                                 <TableCell>
                                     <Tooltip
                                         title={
@@ -196,9 +193,8 @@ const RecipesAdminTable = () => {
                                         <span>
                                             <Button
                                                 variant="outlined"
-                                                color={recipe.active ? "error" : "success"}
+                                                color="primary"
                                                 size="small"
-                                                sx={{ ml: 1 }}
                                                 onClick={() => toggleActive(recipe.id, recipe.active)}
                                                 disabled={recipe.userActive === 0 && recipe.active === 0}
                                             >
@@ -206,21 +202,16 @@ const RecipesAdminTable = () => {
                                             </Button>
                                         </span>
                                     </Tooltip>
-
                                     <Button
                                         variant="contained"
                                         color="primary"
                                         size="small"
-                                        sx={{ ml: 1 }}
+                                        sx={{ mt: 1 }}
                                         onClick={() => navigate(`/edit/${recipe.id}`)}
                                     >
                                         Edit
                                     </Button>
                                 </TableCell>
-
-
-
-
                             </TableRow>
                         ))
                     )}

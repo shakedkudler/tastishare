@@ -20,6 +20,10 @@ const theme = createTheme({
       primary: '#1F1209', // טקסט כהה
       secondary: '#662924', // טקסט פחות חשוב/placeholder
     },
+    info: {
+      main: '#C686A6', // אפשר להשתמש באותו צבע כמו primary,
+      contrastText: '#fff',
+    }
     // אם תרצי, אפשר גם להוסיף info, warning, success וכו'
   },
   components: {

@@ -155,11 +155,7 @@ const SettingsPage = () => {
                     {msg}
                 </Alert>
             )}
-
-            <Typography variant="h6" mb={1}>
-                Username
-            </Typography>
-            <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "flex-start", md: "center" }} mb={2}>
                 <TextField
                     label="Username"
                     value={username}
@@ -190,7 +186,7 @@ const SettingsPage = () => {
             <Typography variant="subtitle1" mb={1}>
                 Choose your avatar:
             </Typography>
-            <Stack direction="row" spacing={2} flexWrap="wrap" mb={3}>
+            <Stack direction="row" gap={2} flexWrap="wrap" mb={3}>
                 {availableAvatars.map((avatar) => (
                     <Avatar
                         key={avatar}

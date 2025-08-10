@@ -116,15 +116,16 @@ const MyAccountPage = () => {
         <Paper
             elevation={3}
             sx={{
-                maxWidth: "100%",
                 width: 1440,
-                m: "0 auto", p: 4,
+                maxWidth: "100%",
+                m: "0 auto",
+                p: { xs: 2, md: 4 },
                 borderRadius: 4,
-                bgcolor: "#fff",
+                minHeight: 600,
             }}
         >
             {/* פרטי משתמש */}
-            <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ mb: 4, display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", gap: 2 }}>
                 <Avatar
                     src={userInfo?.avatar ? `/Avatars/${userInfo.avatar}` : undefined}
                     alt={userInfo?.username || "User"}

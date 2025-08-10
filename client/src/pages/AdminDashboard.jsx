@@ -9,29 +9,35 @@ const AdminDashboard = () => {
     const [tab, setTab] = useState(0);
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
-            <Paper sx={{ p: 3, borderRadius: 4, minHeight: 500 }}>
-                <Typography variant="h4" fontWeight={700} mb={3} color="primary">
-                    Admin Dashboard
-                </Typography>
-                <Tabs
-                    value={tab}
-                    onChange={(_, newVal) => setTab(newVal)}
-                    sx={{ mb: 3 }}
-                >
-                    <Tab label="Users" />
-                    <Tab label="Recipes" />
-                    <Tab label="Reviews" />
+        <Paper elevation={3}
+            sx={{
+                width: 1440,
+                maxWidth: "100%",
+                m: "0 auto",
+                p: { xs: 2, md: 4 },
+                borderRadius: 4,
+                minHeight: 600,
+            }}>
+            <Typography variant="h4" fontWeight={700} mb={3} color="primary">
+                Admin Dashboard
+            </Typography>
+            <Tabs
+                value={tab}
+                onChange={(_, newVal) => setTab(newVal)}
+                sx={{ mb: 3 }}
+            >
+                <Tab label="Users" />
+                <Tab label="Recipes" />
+                <Tab label="Reviews" />
 
 
-                </Tabs>
-                <Box>
-                    {tab === 0 && <UsersAdminTable />}
-                    {tab === 1 && <RecipesAdminTable />}
-                    {tab === 2 && <ReviewsAdminTable />}
-                </Box>
-            </Paper>
-        </Container>
+            </Tabs>
+            <Box>
+                {tab === 0 && <UsersAdminTable />}
+                {tab === 1 && <RecipesAdminTable />}
+                {tab === 2 && <ReviewsAdminTable />}
+            </Box>
+        </Paper>
     );
 };
 

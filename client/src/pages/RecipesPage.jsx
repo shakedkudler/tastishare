@@ -1,6 +1,4 @@
-
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
     Paper,
@@ -27,7 +25,7 @@ import { useAuth } from "../context/AuthContext";
 import RecipeCard from "../components/RecipeCard";
 import RecipeListItem from "../components/RecipeListItem";
 
-const RECIPES_PER_PAGE = 8;
+const RECIPES_PER_PAGE = 12;
 
 const RecipesPage = () => {
     const [recipes, setRecipes] = useState([]);
@@ -367,7 +365,7 @@ const RecipesPage = () => {
             {loading ? (
                 <Grid container spacing={3}>
                     {Array.from({ length: RECIPES_PER_PAGE }).map((_, idx) => (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={idx}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={idx}>
                             <Skeleton variant="rectangular" height={210} sx={{ borderRadius: 3 }} />
                         </Grid>
                     ))}
@@ -387,7 +385,6 @@ const RecipesPage = () => {
                             <Grid container spacing={2}>
                                 {paginatedRecipes.map((recipe) => (
                                     <Grid
-                                        item
                                         size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
                                         key={recipe.id}
                                     >
@@ -423,7 +420,6 @@ const RecipesPage = () => {
                                     borderRadius: 3,
                                     boxShadow: 2,
                                     p: 2,
-                                    ".MuiPagination-ul": { gap: 1.5 },
                                 }}
                                 renderItem={(item) => (
                                     <PaginationItem

@@ -231,15 +231,15 @@ const UsersAdminTable = () => {
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
                                     {user.active ? (
-                                        <Chip label="Active" color="success" />
+                                        <Chip label="Active" color="info" />
                                     ) : (
-                                        <Chip label="Blocked" color="error" />
+                                        <Chip label="Blocked" color="primary" />
                                     )}
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="outlined"
-                                        color={user.active ? "error" : "success"}
+                                        color="primary"
                                         size="small"
                                         sx={{ ml: 1 }}
                                         onClick={() => toggleActive(user.id, user.active)}

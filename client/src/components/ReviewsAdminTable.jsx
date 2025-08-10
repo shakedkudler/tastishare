@@ -221,7 +221,7 @@ const ReviewsAdminTable = () => {
                                 <TableCell>
                                     <Chip
                                         label={review.active ? "Visible" : "Hidden"}
-                                        color={review.active ? "success" : "error"}
+                                        color={review.active ? "info" : "primary"}
                                     />
                                 </TableCell>
                                 <TableCell>
@@ -269,7 +269,7 @@ const ReviewsAdminTable = () => {
                                         <span>
                                             <Button
                                                 variant="outlined"
-                                                color={review.active ? "error" : "success"}
+                                                color="primary"
                                                 size="small"
                                                 disabled={
                                                     !review.active &&
@@ -289,10 +289,6 @@ const ReviewsAdminTable = () => {
                                             </Button>
                                         </span>
                                     </Tooltip>
-
-
-
-
                                 </TableCell>
                             </TableRow>
                         ))

@@ -219,7 +219,7 @@ const EditRecipePage = () => {
                 <Typography variant="h6" sx={{ mb: 1 }}>
                     Categories
                 </Typography>
-                <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mb: 2 }}>
+                <Stack direction="row" gap={0.5} sx={{ flexWrap: "wrap", mb: 2 }}>
                     {categories.length === 0 ? (
                         <Typography color="text.secondary">No categories available.</Typography>
                     ) : (
@@ -236,7 +236,7 @@ const EditRecipePage = () => {
                     )}
                 </Stack>
 
-                <Stack direction="row" spacing={2} sx={{ mb: 3 }} alignItems="center">
+                <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ mb: 3 }} alignItems={{ xs: "flex-start", md: "center" }}>
                     <AccessTimeIcon fontSize="small" color="action" />
                     <TextField
                         label="Preparation Time (minutes)"

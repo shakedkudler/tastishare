@@ -168,14 +168,12 @@ const RecipePage = () => {
         <Paper
             elevation={3}
             sx={{
-                maxWidth: "100%",
                 width: 1440,
+                maxWidth: "100%",
                 m: "0 auto",
-                p: { xs: 2, sm: 4 },
+                p: { xs: 2, md: 4 },
                 borderRadius: 4,
-                bgcolor: "#fff",
-                mt: 3,
-                mb: 3,
+                minHeight: 600,
             }}
         >
             {/* Back button */}
@@ -194,14 +192,17 @@ const RecipePage = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 {recipe.description}
             </Typography>
-            <Box sx={{ display: "flex", gap: 2, alignItems: "flex-start", mb: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, alignItems: "flex-start", mb: 2 }}>
                 {recipe.image && (
                     <Box
                         component="img"
                         src={`http://localhost:3001/uploads/${recipe.image}`}
                         alt={recipe.title}
                         sx={{
+                            width: { xs: "100%", sm: 350 },
+                            maxWidth: 350,
                             maxHeight: 350,
+                            height: "auto",
                             objectFit: "contain",
                             borderRadius: 2,
                             boxShadow: 1,
@@ -246,7 +247,7 @@ const RecipePage = () => {
             </Box>
 
             {/* Info */}
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2, flexWrap: "wrap" }}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "flex-start", md: "center" }} sx={{ mb: 2, flexWrap: "wrap" }}>
                 {/* כאן שיניתי - מציגים את האווטאר אם יש */}
                 {recipe.avatar ? (
                     <Avatar
@@ -279,7 +280,7 @@ const RecipePage = () => {
                 <IconButton color="primary" onClick={handleShare} aria-label="Share">
                     <ShareIcon />
                 </IconButton>
-                <IconButton color="warning" onClick={handlePrint} aria-label="Print">
+                <IconButton color="primary" onClick={handlePrint} aria-label="Print">
                     <PrintIcon />
                 </IconButton>
             </Stack>
@@ -297,9 +298,12 @@ const RecipePage = () => {
                         {recipe.ingredients.map((ingredient, idx) => (
                             <ListItem key={idx} sx={{ py: 0.5 }}>
                                 <ListItemIcon>
-                                    <StarIcon color="warning" fontSize="small" />
+                                    <StarIcon color="primary" fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText primary={`${ingredient.name}${ingredient.quantity ? ` - ${ingredient.quantity}` : ""}`} />
+                                <ListItemText
+                                    primary={`${ingredient.name}${ingredient.quantity ? ` - ${ingredient.quantity}` : ""}`}
+                                    sx={{ wordBreak: "break-word" }}
+                                />
                             </ListItem>
                         ))}
                     </List>
@@ -315,11 +319,14 @@ const RecipePage = () => {
                     </Typography>
                     <List>
                         {recipe.steps.map((step, idx) => (
-                            <ListItem key={idx} sx={{ alignItems: "flex-start", py: 0.5 }}>
+                            <ListItem key={idx} sx={{ py: 0.5 }}>
                                 <ListItemIcon>
-                                    <b>{idx + 1}.</b>
+                                    <StarIcon color="primary" fontSize="small" />
                                 </ListItemIcon>
-                                <ListItemText primary={step.description} />
+                                <ListItemText
+                                    primary={step.description}
+                                    sx={{ wordBreak: "break-word" }}
+                                />
                             </ListItem>
                         ))}
                     </List>
@@ -361,7 +368,7 @@ const RecipePage = () => {
                             <Button
                                 onClick={handleReviewSubmit}
                                 variant="contained"
-                                color="success"
+                                color="primary"
                                 sx={{ fontWeight: "bold" }}
                             >
                                 Submit Review
@@ -393,7 +400,7 @@ const RecipePage = () => {
                             elevation={0}
                             sx={{ mb: 2, p: 2, borderRadius: 2, border: "1px solid #eee", bgcolor: "#fcfcfc" }}
                         >
-                            <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
+                            <Stack direction={{ xs: "column", md: "row" }} alignItems={{ xs: "flex-start", md: "center" }} spacing={1} sx={{ mb: 0.5 }}>
                                 {/* כאן גם מציגים את האווטאר בביקורת */}
                                 {review.avatar ? (
                                     <Avatar
