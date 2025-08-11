@@ -47,8 +47,6 @@ const RecipeListItem = ({ recipe }) => {
                     backgroundColor: "#f5f5f5",
                 }}
             />
-
-            {/* Content */}
             <Box sx={{ flex: 1, overflow: "hidden" }}>
                 <Typography
                     variant="subtitle1"
@@ -57,7 +55,6 @@ const RecipeListItem = ({ recipe }) => {
                 >
                     {recipe.title}
                 </Typography>
-
                 <Typography
                     variant="body2"
                     color="text.secondary"
@@ -97,11 +94,44 @@ const RecipeListItem = ({ recipe }) => {
                             <Chip label="..." size="small" sx={{ fontSize: "0.7rem", height: 22 }} />
                         )}
                     </Stack>
-                    <Stack direction="row" alignItems="center" spacing={0.5}>
-                        <AccessTimeIcon fontSize="small" color="action" />
-                        <Typography variant="caption" color="text.secondary">
-                            {recipe.total_time || "-"} min
-                        </Typography>
+                    <Stack
+                        direction={{ xs: "column", sm: "row" }}
+                        alignItems={{ xs: "flex-start", sm: "center" }}
+                        spacing={0.5}
+                    >
+                        <Stack direction="row" alignItems="center" spacing={0.5}>
+                            <AccessTimeIcon fontSize="small" color="action" />
+                            <Typography variant="caption" color="text.secondary">
+                                {recipe.total_time || "-"} min
+                            </Typography>
+                        </Stack>
+                        {recipe.author && (
+                            <>
+                                <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={{ display: { xs: "none", sm: "inline" } }}
+                                >
+                                    •
+                                </Typography>
+                                <Typography
+                                    variant="caption"
+                                    color="primary"
+                                    fontWeight="bold"
+                                    sx={{
+                                        overflow: "hidden",
+                                        display: "-webkit-box",
+                                        WebkitLineClamp: 1,
+                                        WebkitBoxOrient: "vertical",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "normal",
+                                        maxWidth: { xs: "100%", sm: "100px" },
+                                    }}
+                                >
+                                    {recipe.author}
+                                </Typography>
+                            </>
+                        )}
                     </Stack>
                 </Stack>
             </Box>

@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "@mui/material/Link";
+import { useDialog } from "../context/DialogContext";
 
 const AVATAR_COUNT = 10; // עדכני אם יהיו יותר/פחות
 
@@ -28,6 +29,8 @@ const RegisterPage = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const navigate = useNavigate();
+
+    const { openDialog } = useDialog();
 
     const handleChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -60,8 +63,10 @@ const RegisterPage = () => {
                 return setErrorMsg(data.message || "Registration error");
             }
 
-            alert("You have successfully registered!");
-            navigate("/login"); // ניתוב אוטומטי לעמוד התחברות אחרי הרשמה
+            openDialog({
+                body: <Typography>You have successfully registered!</Typography>,
+            });
+            navigate("/login");
         } catch {
             setErrorMsg("ERROR");
         }

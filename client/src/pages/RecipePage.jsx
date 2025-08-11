@@ -27,11 +27,10 @@ import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import StarIcon from "@mui/icons-material/Star";
 import RateReviewIcon from "@mui/icons-material/RateReview";
-
-// הוספת האייקונים לזמנים
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocalDiningIcon from "@mui/icons-material/LocalDining";
 import { useAuth } from "../context/AuthContext";
+import { useDialog } from "../context/DialogContext";
 
 const RecipePage = () => {
     const { id } = useParams();
@@ -44,6 +43,7 @@ const RecipePage = () => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const { logout } = useAuth();
+    const { openDialog } = useDialog();
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -99,7 +99,13 @@ const RecipePage = () => {
 
     const handleReviewSubmit = async () => {
         const token = localStorage.getItem("token");
-        if (!newComment || !newRating) return alert("Please provide both comment and rating");
+
+        if (!newComment || !newRating) {
+            openDialog({
+                body: <Typography>Please provide both comment and rating</Typography>,
+            });
+            return;
+        }
 
         try {
             const res = await fetch(`http://localhost:3001/api/reviews/${id}`, {
@@ -127,7 +133,9 @@ const RecipePage = () => {
             setShowReviewInput(false);
         } catch (err) {
             console.error("Error adding review:", err);
-            alert("Failed to submit review");
+            openDialog({
+                body: <Typography>Failed to submit review</Typography>,
+            });
         }
     };
 
@@ -151,13 +159,21 @@ const RecipePage = () => {
             setIsFavorite(!isFavorite);
         } catch (err) {
             console.error(err);
-            alert("Failed to update favorite status");
+            openDialog({
+                body: <Typography>Failed to update favorite status</Typography>,
+            });
         }
     };
 
     const handleShare = () => {
         navigator.clipboard.writeText(window.location.href);
-        alert("Recipe link copied!");
+        openDialog({
+            body: <Typography>Recipe link copied!</Typography>,
+            //confirmText: "Confirm",
+            //cancelText: "Cancel",
+            //onConfirm: () => console.log("Confirmed"),
+            //onCancel: () => console.log("Canceled")
+        });
     };
 
     const handlePrint = () => {

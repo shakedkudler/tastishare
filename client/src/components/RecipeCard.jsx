@@ -112,6 +112,21 @@ const RecipeCard = ({ recipe }) => {
                     }}
                 />
             )}
+            <Typography
+                variant="body2"
+                color="primary"
+                fontWeight="bold"
+                sx={{
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "normal",
+                }}
+            >
+                @{recipe.author}
+            </Typography>
         </Paper>
     )
 };

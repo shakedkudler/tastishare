@@ -92,11 +92,16 @@ export const getUserRecipes = async (req, res) => {
 // ✅ שליפת כל המתכונים (ציבורי) עם ממוצע דירוג וקטגוריות
 export const getAllRecipes = async (req, res) => {
   try {
-    // שליפת כל המתכונים יחד עם ממוצע הדירוג
+    // Get recipes + author name + avg rating in one query
     const [recipes] = await db.query(`
-      SELECT r.*, AVG(rv.rating) AS averageRating
+      SELECT 
+        r.*,
+        AVG(rv.rating) AS averageRating,
+        u.id AS authorId,
+        u.userName AS author
       FROM recipes r
       LEFT JOIN reviews rv ON r.id = rv.recipe_id
+      LEFT JOIN users u ON r.userId = u.id
       WHERE r.active = 1
       GROUP BY r.id
       ORDER BY r.created_at DESC
@@ -104,10 +109,8 @@ export const getAllRecipes = async (req, res) => {
 
     if (!recipes.length) return res.json([]);
 
-    // שליפת כל הקטגוריות עבור כל המתכונים בבת אחת
+    // Get categories
     const recipeIds = recipes.map(r => r.id);
-    if (!recipeIds.length) return res.json([]);
-
     const [cats] = await db.query(
       `SELECT rc.recipe_id, c.id, c.name
        FROM recipe_categories rc
@@ -116,20 +119,20 @@ export const getAllRecipes = async (req, res) => {
       recipeIds
     );
 
-    // מיפוי קטגוריות לפי מזהה מתכון
     const categoriesMap = {};
     cats.forEach(cat => {
       if (!categoriesMap[cat.recipe_id]) categoriesMap[cat.recipe_id] = [];
       categoriesMap[cat.recipe_id].push({ id: cat.id, name: cat.name });
     });
 
-    // הוספת שדה קטגוריות לכל מתכון
-    const recipesWithCategories = recipes.map(recipe => ({
+    // Add categories + author object
+    const recipesWithData = recipes.map(recipe => ({
       ...recipe,
-      categories: categoriesMap[recipe.id] || []
+      categories: categoriesMap[recipe.id] || [],
+      author: recipe.author
     }));
 
-    res.json(recipesWithCategories);
+    res.json(recipesWithData);
   } catch (err) {
     console.error("❌ Error fetching all recipes:", err);
     res.status(500).json({ message: "Server error" });

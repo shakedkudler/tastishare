@@ -15,6 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useAuth } from "../context/AuthContext";
+import { useDialog } from "../context/DialogContext";
 
 const MyAccountPage = () => {
     const [recipes, setRecipes] = useState([]);
@@ -26,6 +27,7 @@ const MyAccountPage = () => {
     const navigate = useNavigate();
 
     const { logout } = useAuth();
+    const { openDialog } = useDialog();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -92,9 +94,20 @@ const MyAccountPage = () => {
     }, [currentUserId, logout, navigate]);
 
     const handleDelete = async (id) => {
-        if (!window.confirm("בטוח שברצונך למחוק את המתכון?")) return;
+        const ok = await openDialog({
+            body: <Typography>Are you sure that you want to delete this recipe?</Typography>,
+            confirmText: "Delete",
+            cancelText: "Cancel",
+            awaitOnConfirm: true,
+        });
+
+        if (!ok) {
+            console.log("User canceled/closed");
+            return;
+        }
 
         const token = localStorage.getItem("token");
+
         try {
             const res = await fetch(`http://localhost:3001/api/recipes/${id}/deactivate`, {
                 method: "PUT",
@@ -105,7 +118,10 @@ const MyAccountPage = () => {
 
             setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
         } catch (err) {
-            alert("שגיאה במחיקה: " + err.message);
+            const errMsg = `שגיאה במחיקה:  ${err.message}`;
+            openDialog({
+                body: <Typography>{errMsg}</Typography>,
+            });
         }
     };
 

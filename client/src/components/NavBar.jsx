@@ -97,7 +97,7 @@ const NavBar = () => {
 
     return (
         <>
-            <AppBar position="fixed" color="default" elevation={1}>
+            <AppBar position="fixed" sx={{ bgcolor: "#FFF" }} elevation={1}>
                 <Container maxWidth="xl">
                     <Toolbar sx={{ justifyContent: 'space-between' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

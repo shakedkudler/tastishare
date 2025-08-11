@@ -8,9 +8,8 @@ const Footer = () => {
     return (
         <AppBar
             position="static"
-            color="default"
             elevation={1}
-            sx={{ top: 'auto', bottom: 0, bgcolor: '#f5f5f5' }}
+            sx={{ top: 'auto', bottom: 0, bgcolor: '#FFF' }}
         >
             <Container maxWidth="xl">
                 <Toolbar
