@@ -223,7 +223,7 @@ const UsersAdminTable = () => {
                         filteredUsers.map((user) => (
                             <TableRow key={user.id}>
                                 <TableCell>
-                                    <Avatar src={user.avatar ? `/Avatars/${user.avatar}` : ""}>
+                                    <Avatar src={user.avatar ? `/Avatars/${user.avatar}` : ""} alt={user.username}>
                                         {user.username?.charAt(0).toUpperCase()}
                                     </Avatar>
                                 </TableCell>

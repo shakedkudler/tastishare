@@ -146,10 +146,9 @@ const SettingsPage = () => {
 
     return (
         <Paper elevation={3} sx={{ maxWidth: 1440, m: "0 auto", p: 4, borderRadius: 4 }}>
-            <Typography variant="h4" fontWeight="bold" align="center" mb={3}>
+            <Typography variant="h1" fontWeight="bold" align="center" mb={3}>
                 Settings
             </Typography>
-
             {msg && (
                 <Alert severity="info" sx={{ mb: 2 }}>
                     {msg}
@@ -169,7 +168,7 @@ const SettingsPage = () => {
 
             <Divider sx={{ my: 3 }} />
 
-            <Typography variant="h6" mb={1}>
+            <Typography variant="h3" mb={1}>
                 Profile Icon
             </Typography>
             <Stack direction="row" spacing={2} alignItems="center" mb={2}>
@@ -206,16 +205,13 @@ const SettingsPage = () => {
                     />
                 ))}
             </Stack>
-
-            {/* עיצוב Danger Zone למחיקת חשבון */}
             <Divider sx={{ my: 4 }} />
-
             <Box
                 sx={{
                     mt: 4,
                     p: 3,
                     borderRadius: 3,
-                    bgcolor: "#fff4f4",
+                    bgcolor: "#E2CADE",
                     boxShadow: 1,
                     maxWidth: 480,
                     mx: "auto",
@@ -223,7 +219,7 @@ const SettingsPage = () => {
                 }}
             >
                 <Typography
-                    variant="h6"
+                    variant="h3"
                     color="error"
                     fontWeight="bold"
                     gutterBottom

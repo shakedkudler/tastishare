@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -77,30 +77,31 @@ const LoginPage = () => {
                     borderRadius: 4,
                 }}
             >
-                {/* כותרת לחיצה לעמוד הבית, מיושרת למרכז */}
                 <Typography
-                    variant="h4"
-                    sx={{
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        mb: 3,
-                        userSelect: "none",
-                        textAlign: "center",
-                    }}
+                    variant="body1"
+                    component={RouterLink}
                     color="primary"
-                    onClick={() => navigate("/")}
+                    sx={{
+                        display: "block",
+                        mb: 3,
+                        textAlign: "center",
+                        fontSize: { xs: 20, sm: 24 },
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        "&:hover": { textDecoration: "none" }
+                    }}
+                    to="/"
                 >
                     TastiShare
                 </Typography>
-
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Typography component="h1" variant="h5" fontWeight="bold" sx={{ mb: 1 }}>
+                    <Typography component="h1" variant="h1" fontWeight="bold" sx={{ mb: 1 }}>
                         Log In
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                         Please enter your Email and Password
                     </Typography>
-
                     <Box component="form" onSubmit={handleLogin} sx={{ mt: 1, width: "100%" }}>
                         <TextField
                             margin="normal"
@@ -140,22 +141,13 @@ const LoginPage = () => {
                             }}
                         />
                         {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-
-                        {/* Forgot password link מימין */}
-                        <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
-                            <Link href="/forgot-password" variant="body2" underline="hover" sx={{ fontSize: 14 }}>
-                                Forgot password?
-                            </Link>
-                        </Box>
-
                         {/* כפתור התחברות */}
-                        <Button type="submit" fullWidth variant="outlined" sx={{ mb: 1, fontWeight: "bold" }}>
+                        <Button type="submit" fullWidth variant="outlined" sx={{ mt: 3, mb: 1, fontWeight: "bold" }}>
                             LOG IN
                         </Button>
-
                         {/* Sign up לינק באמצע */}
                         <Box sx={{ display: "flex", justifyContent: "center" }}>
-                            <Link href="/register" variant="body2" underline="hover" sx={{ fontSize: 14 }}>
+                            <Link component={RouterLink} to="/register" variant="body2" underline="hover" sx={{ fontSize: 14 }}>
                                 Sign up
                             </Link>
                         </Box>

@@ -53,7 +53,7 @@ const ContactPage = () => {
             }}>
             <Box sx={{ textAlign: "center", mb: 2 }}>
                 <EmailIcon color="primary" sx={{ fontSize: 40 }} />
-                <Typography variant="h5" fontWeight="bold" sx={{ mt: 1 }}>
+                <Typography variant="h1" fontWeight="bold" sx={{ mt: 1 }}>
                     Contact Us
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>

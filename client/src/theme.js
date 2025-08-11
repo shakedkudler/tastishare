@@ -38,10 +38,10 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Rubik, Assistant, Arial, sans-serif',
-    h1: { fontWeight: 800 },
-    h2: { fontWeight: 700 },
-    h3: { fontWeight: 700 },
-    h4: { fontWeight: 700 },
+    h1: { fontSize: 32, fontWeight: 800 },
+    h2: { fontSize: 24, fontWeight: 700 },
+    h3: { fontSize: 20, fontWeight: 700 },
+    h4: { fontSize: 18, fontWeight: 700 },
     button: { textTransform: 'none' },
   },
 });

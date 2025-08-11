@@ -11,7 +11,6 @@ import ContactPage from "./pages/ContactPage";
 import EditRecipePage from "./pages/EditRecipePage";
 import RecipesPage from "./pages/RecipesPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -22,7 +21,6 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route
                     path="/account"

@@ -202,7 +202,7 @@ const RecipePage = () => {
             </Button>
 
             {/* Title + image + categories */}
-            <Typography variant="h4" fontWeight="bold" sx={{ mb: 1 }}>
+            <Typography variant="h1" fontWeight="bold" sx={{ mb: 1 }}>
                 {recipe.title}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -306,7 +306,7 @@ const RecipePage = () => {
             {/* Ingredients */}
             {recipe.ingredients && recipe.ingredients.length > 0 && (
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+                    <Typography variant="h3" fontWeight="bold" sx={{ mb: 1 }}>
                         <RestaurantMenuIcon sx={{ mr: 1, verticalAlign: "middle" }} />
                         Ingredients
                     </Typography>
@@ -329,7 +329,7 @@ const RecipePage = () => {
             {/* Steps */}
             {recipe.steps && recipe.steps.length > 0 && (
                 <Box sx={{ mb: 2 }}>
-                    <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+                    <Typography variant="h3" fontWeight="bold" sx={{ mb: 1 }}>
                         <ListAltIcon sx={{ mr: 1, verticalAlign: "middle" }} />
                         Steps
                     </Typography>

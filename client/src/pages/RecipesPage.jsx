@@ -180,7 +180,7 @@ const RecipesPage = () => {
             }}
         >
             <Typography
-                variant="h3"
+                variant="h1"
                 fontWeight="bold"
                 sx={{ mb: 3, textAlign: "center" }}
             >

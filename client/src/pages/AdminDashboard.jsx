@@ -18,7 +18,7 @@ const AdminDashboard = () => {
                 borderRadius: 4,
                 minHeight: 600,
             }}>
-            <Typography variant="h4" fontWeight={700} mb={3} color="primary">
+            <Typography variant="h1" fontWeight={700} mb={3}>
                 Admin Dashboard
             </Typography>
             <Tabs

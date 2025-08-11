@@ -32,7 +32,7 @@ const RecipeCard = ({ recipe }) => {
             style={{ textDecoration: "none", color: "inherit" }}
         >
             <Typography
-                variant="h6"
+                variant="h3"
                 fontWeight="bold"
             >
                 {recipe.title}

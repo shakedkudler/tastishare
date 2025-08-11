@@ -150,7 +150,7 @@ const MyAccountPage = () => {
                     {!userInfo?.avatar && (userInfo?.username?.[0]?.toUpperCase() || "?")}
                 </Avatar>
                 <Box>
-                    <Typography variant="h5" fontWeight="bold">
+                    <Typography variant="h1" fontWeight="bold">
                         {userInfo?.username}
                     </Typography>
                     <Typography color="text.secondary">{userInfo?.email}</Typography>
@@ -161,7 +161,7 @@ const MyAccountPage = () => {
 
             {/* המתכונים שלי */}
             <Box sx={{ mb: 4 }}>
-                <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+                <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }}>
                     My Recipes
                 </Typography>
                 {recipes.length === 0 ? (
@@ -175,7 +175,7 @@ const MyAccountPage = () => {
                                     sx={{
                                         p: 2,
                                         borderRadius: 2,
-                                        bgcolor: "#f9fafb",
+                                        bgcolor: "#FFF",
                                         height: "100%",
                                         display: "flex",
                                         flexDirection: "column",
@@ -246,7 +246,7 @@ const MyAccountPage = () => {
 
             {/* מועדפים שלי */}
             <Box>
-                <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+                <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }}>
                     My Favorites
                 </Typography>
                 {favorites.length === 0 ? (
@@ -260,7 +260,7 @@ const MyAccountPage = () => {
                                     sx={{
                                         p: 2,
                                         borderRadius: 2,
-                                        bgcolor: "#f8f8ff",
+                                        bgcolor: "#FFF",
                                         height: "100%",
                                         display: "flex",
                                         flexDirection: "column",
@@ -268,7 +268,7 @@ const MyAccountPage = () => {
                                         cursor: "pointer",
                                         position: "relative",
                                         transition: "box-shadow 0.15s",
-                                        "&:hover": { boxShadow: 6, bgcolor: "#f5f9ff" }
+                                        "&:hover": { boxShadow: 6, bgcolor: "#f4f8fc" }
                                     }}
                                     onClick={() => navigate(`/recipe/${fav.recipe_id}`)}
                                 >

@@ -79,7 +79,7 @@ const HomePage = () => {
             }}
         >
             <Typography
-                variant="h3"
+                variant="h1"
                 fontWeight="bold"
                 align="center"
                 color="primary.main"
@@ -126,7 +126,7 @@ const HomePage = () => {
 
             {/* קרוסלה פופולרית */}
             <Box sx={{ mb: 1, textAlign: "center" }}>
-                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
+                <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
                     Popular Recipes
                 </Typography>
                 <EmblaCarousel
@@ -156,7 +156,7 @@ const HomePage = () => {
 
             {/* קרוסלה של מתכונים חדשים */}
             <Box sx={{ mb: 1, textAlign: "center" }}>
-                <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
+                <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }} color="primary.main">
                     New Recipes
                 </Typography>
                 <EmblaCarousel

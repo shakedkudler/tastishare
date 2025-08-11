@@ -142,15 +142,24 @@ export const getAllRecipes = async (req, res) => {
 // ✅ מתכונים פופולריים (ממוצע דירוג מעל 4, מוגבל ל-6 מתכונים)
 export const getPopularRecipes = async (req, res) => {
   try {
+    // recipes + avg rating (from subquery) + author
     const [recipes] = await db.query(`
-      SELECT r.*, AVG(rv.rating) AS averageRating
+      SELECT
+        r.*,
+        rv.averageRating,
+        u.id  AS authorId,
+        u.userName AS author
       FROM recipes r
-      LEFT JOIN reviews rv ON r.id = rv.recipe_id
+      LEFT JOIN (
+        SELECT recipe_id, AVG(rating) AS averageRating
+        FROM reviews
+        GROUP BY recipe_id
+      ) rv ON rv.recipe_id = r.id
+      LEFT JOIN users u ON u.id = r.userId
       WHERE r.active = 1
-      GROUP BY r.id
-      HAVING averageRating > 4
-      ORDER BY averageRating DESC
-      LIMIT 6
+      AND COALESCE(rv.averageRating, 0) > 4
+      ORDER BY rv.averageRating DESC, r.created_at DESC
+      LIMIT 20
     `);
 
     if (!recipes.length) return res.json([]);
@@ -166,16 +175,16 @@ export const getPopularRecipes = async (req, res) => {
 
     const categoriesMap = {};
     cats.forEach(cat => {
-      if (!categoriesMap[cat.recipe_id]) categoriesMap[cat.recipe_id] = [];
-      categoriesMap[cat.recipe_id].push({ id: cat.id, name: cat.name });
+      (categoriesMap[cat.recipe_id] ||= []).push({ id: cat.id, name: cat.name });
     });
 
-    const recipesWithCategories = recipes.map(recipe => ({
-      ...recipe,
-      categories: categoriesMap[recipe.id] || []
+    const out = recipes.map(r => ({
+      ...r,
+      categories: categoriesMap[r.id] || [],
+      author: r.author, // string (u.userName)
     }));
 
-    res.json(recipesWithCategories);
+    res.json(out);
   } catch (err) {
     console.error("❌ Error fetching popular recipes:", err);
     res.status(500).json({ message: "Server error" });
@@ -184,11 +193,19 @@ export const getPopularRecipes = async (req, res) => {
 
 export const getNewRecipes = async (req, res) => {
   try {
+    // newest recipes + author
     const [recipes] = await db.query(`
-      SELECT * FROM recipes
-      WHERE active = 1 AND image IS NOT NULL AND image != ''
-      ORDER BY created_at DESC
-      LIMIT 6
+      SELECT
+        r.*,
+        u.id AS authorId,
+        u.userName AS author
+      FROM recipes r
+      LEFT JOIN users u ON u.id = r.userId
+      WHERE r.active = 1
+        AND r.image IS NOT NULL
+        AND r.image <> ''
+      ORDER BY r.created_at DESC
+      LIMIT 20
     `);
 
     if (!recipes.length) return res.json([]);
@@ -204,16 +221,16 @@ export const getNewRecipes = async (req, res) => {
 
     const categoriesMap = {};
     cats.forEach(cat => {
-      if (!categoriesMap[cat.recipe_id]) categoriesMap[cat.recipe_id] = [];
-      categoriesMap[cat.recipe_id].push({ id: cat.id, name: cat.name });
+      (categoriesMap[cat.recipe_id] ||= []).push({ id: cat.id, name: cat.name });
     });
 
-    const recipesWithCategories = recipes.map(recipe => ({
-      ...recipe,
-      categories: categoriesMap[recipe.id] || []
+    const out = recipes.map(r => ({
+      ...r,
+      categories: categoriesMap[r.id] || [],
+      author: r.author, // string (u.userName)
     }));
 
-    res.json(recipesWithCategories);
+    res.json(out);
   } catch (err) {
     console.error("❌ Error fetching new recipes:", err);
     res.status(500).json({ message: "Server error" });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { useNavigate, Link as RouterLink, Route } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
@@ -94,24 +94,26 @@ const RegisterPage = () => {
                     borderRadius: 4,
                 }}
             >
-                {/* כותרת לחיצה לעמוד הבית, מיושרת למרכז */}
                 <Typography
-                    variant="h4"
-                    sx={{
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        mb: 3,
-                        userSelect: "none",
-                        textAlign: "center",
-                    }}
+                    variant="body1"
+                    component={RouterLink}
                     color="primary"
-                    onClick={() => navigate("/")}
+                    sx={{
+                        display: "block",
+                        mb: 3,
+                        textAlign: "center",
+                        fontSize: { xs: 20, sm: 24 },
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        "&:hover": { textDecoration: "none" }
+                    }}
+                    to="/"
                 >
                     TastiShare
                 </Typography>
-
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Typography component="h1" variant="h5" fontWeight="bold" sx={{ mb: 1 }}>
+                    <Typography component="h1" variant="h1" fontWeight="bold" sx={{ mb: 1 }}>
                         Registration
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -221,13 +223,7 @@ const RegisterPage = () => {
                             Sign up
                         </Button>
                         <Box sx={{ display: "flex", justifyContent: "center" }}>
-                            <Link
-                                component={RouterLink}
-                                to="/login"
-                                variant="body2"
-                                underline="hover"
-                                sx={{ fontSize: 14 }}
-                            >
+                            <Link component={RouterLink} to="/login" variant="body2" underline="hover" sx={{ fontSize: 14 }}>
                                 Already have an account? Log in
                             </Link>
                         </Box>

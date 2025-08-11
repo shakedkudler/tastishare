@@ -17,7 +17,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
@@ -103,12 +103,17 @@ const NavBar = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             {/* לוגו / שם */}
                             <Typography
-                                variant="h6"
                                 noWrap
-                                component="div"
-                                color='primary.main'
-                                sx={{ fontWeight: 700, cursor: 'pointer', }}
-                                onClick={() => navigate('/')}
+                                component={Link}
+                                to="/"
+                                color="primary"
+                                sx={{
+                                    fontSize: { xs: 20, sm: 24 },
+                                    fontWeight: 700,
+                                    textDecoration: "none",
+                                    cursor: "pointer",
+                                    "&:hover": { textDecoration: "none" }
+                                }}
                             >
                                 TastiShare
                             </Typography>

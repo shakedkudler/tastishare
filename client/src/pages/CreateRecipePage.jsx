@@ -119,7 +119,7 @@ const CreateRecipePage = () => {
 
     return (
         <Paper elevation={3} sx={{ maxWidth: 1440, m: "0 auto", p: 4, borderRadius: 4 }}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom align="center">
+            <Typography variant="h1" fontWeight="bold" gutterBottom align="center">
                 Create a New Recipe
             </Typography>
             <form onSubmit={handleSubmit}>
@@ -165,7 +165,7 @@ const CreateRecipePage = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                <Typography variant="h6" sx={{ mb: 1 }}>
+                <Typography variant="h3" sx={{ mb: 1 }}>
                     Categories
                 </Typography>
                 <Stack direction="row" gap={0.5} sx={{ flexWrap: "wrap", mb: 2 }}>
@@ -209,7 +209,7 @@ const CreateRecipePage = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                <Typography variant="h6" sx={{ mb: 1 }}>
+                <Typography variant="h3" sx={{ mb: 1 }}>
                     Ingredients
                 </Typography>
                 <Stack spacing={1} sx={{ mb: 2 }}>
@@ -263,7 +263,7 @@ const CreateRecipePage = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                <Typography variant="h6" sx={{ mb: 1 }}>
+                <Typography variant="h3" sx={{ mb: 1 }}>
                     Preparation Steps
                 </Typography>
                 <Stack spacing={1} sx={{ mb: 2 }}>
